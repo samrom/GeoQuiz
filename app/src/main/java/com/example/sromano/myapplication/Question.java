@@ -1,9 +1,22 @@
+/**
+ * Project: Geography Quiz
+ *
+ * Purpose: A class to set up the structure to develop trivia questions.
+ *
+ * File:    Question.java
+ * Author:  Samantha Romano
+ *
+ * Resource: Android Programming - The Big Nerd Ranch Guide 3rd Edition
+ *
+ */
+
 package com.example.sromano.myapplication;
 
 public class Question {
 
     private int mTextResId;
     private boolean mAnswerTrue;
+    private boolean answered = false;
 
     public Question(int textResId, boolean AnswerTrue) {
         mTextResId = textResId;
@@ -23,6 +36,25 @@ public class Question {
 
     public void setAnswerTrue(boolean answerTrue) {
         mAnswerTrue = answerTrue;
+    }
+
+    public void clickedAnswer() {
+        answered = true;
+    }
+
+    public boolean getClickedAnswer() {
+        return answered;
+    }
+
+    public int correct(boolean answer){
+        int result = 0;
+        if(answer == true)
+        {
+            return ++result;
+        }
+        else {
+            return --result;
+        }
     }
 
 }
