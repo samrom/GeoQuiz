@@ -31,7 +31,8 @@ public class GeoQuiz extends AppCompatActivity {
     private ImageButton mPrevButton;
     private TextView mQuestionTextView;
     private int mCurrentIndex = 0;
-    private int result;
+    private int counter = -1;
+    private double result;
     private static final String TAG = "Quiz Activity";
 
     /**
@@ -46,31 +47,26 @@ public class GeoQuiz extends AppCompatActivity {
 
     };
 
-    private Integer[] questionViewed = new Integer[] {0,0,0,0,0};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_quiz);
         Log.d(TAG, "onCreate(Bundle) called");
 
-        int confirmation = 0;
-
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
-        updateQuestion();
+
+       updateQuestion();
 
 
         mTrueButton = (Button) findViewById(R.id.true_btn);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mQuestionBank[mCurrentIndex].getClickedAnswer()) {
-                    finishedQuiz(result);
-                }
-                else {
+
+
                     mQuestionBank[mCurrentIndex].clickedAnswer();
                     checkAnswer(true);
-                }
+
 
             }
         });
@@ -80,13 +76,10 @@ public class GeoQuiz extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mQuestionBank[mCurrentIndex].getClickedAnswer()) {
-                    finishedQuiz(result);
-                }
-                else {
+
                     mQuestionBank[mCurrentIndex].clickedAnswer();
                     checkAnswer(false);
-                }
+
 
             }
         });
@@ -123,8 +116,11 @@ public class GeoQuiz extends AppCompatActivity {
      * the display to either next or previous question.
      */
     private void updateQuestion() {
+
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
+        counter++;
+        allAnswered(counter);
     }
 
     /**
@@ -142,24 +138,34 @@ public class GeoQuiz extends AppCompatActivity {
         }
         else {
             messageID = R.string.incorrect_toast;
-            result = result - 1;
             Log.d("Result Incorrect", String.valueOf(result));
         }
         // Displays Correct or Incorrect on the screen
         Toast.makeText(GeoQuiz.this, messageID, Toast.LENGTH_SHORT).show();
+
+
+
     }
 
-
-    private void finishedQuiz(int grade) {
+    /**
+     * Method to calculate the grade user got.
+     * @param grade pass in the number correct
+     */
+    private void finishedQuiz(double grade) {
         Log.d("Incoming Grade", String.valueOf(grade));
-        float finalGrade = (3/5);
+        double finalGrade = 100*(grade/(double)(mQuestionBank.length));
         Log.d("Final Grade", String.valueOf(finalGrade));
         Toast.makeText(GeoQuiz.this, "Grade is " + String.valueOf(finalGrade)
                 + "%", Toast.LENGTH_LONG).show();
-
+        onStop();
     }
 
-
+    private void allAnswered(int counter) {
+      if(counter >= mQuestionBank.length)
+       {
+            finishedQuiz(result);
+       }
+    }
 
     @Override
     public void onStart(){
