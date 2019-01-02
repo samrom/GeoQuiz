@@ -160,6 +160,11 @@ public class GeoQuiz extends AppCompatActivity {
         onStop();
     }
 
+    /**
+     * Method to check whether an answer has been selected for each
+     * question.
+     * @param counter - global variable to track each answer.
+     */
     private void allAnswered(int counter) {
       if(counter >= mQuestionBank.length)
        {
