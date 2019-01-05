@@ -14,6 +14,7 @@
  */
 package com.example.sromano.myapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 public class GeoQuiz extends AppCompatActivity {
 
+    private Button mCheatButton;
     private Button mTrueButton;
     private Button mFalseButton;
     private ImageButton mNextButton;
@@ -81,6 +83,16 @@ public class GeoQuiz extends AppCompatActivity {
                     checkAnswer(false);
 
 
+            }
+        });
+
+        mCheatButton = (Button) findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                Intent intent = CheatActivity.newIntent(GeoQuiz.this, answerIsTrue);
+                startActivity(intent);
             }
         });
 
